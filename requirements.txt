@@ -1,10 +1,11 @@
-python_version = "3.9"
 appdirs==1.4.4
 asgiref==3.8.1
 beautifulsoup4==4.12.3
 certifi==2024.2.2
 charset-normalizer==3.3.2
+distlib==0.3.8
 Django==5.0.3
+filelock==3.13.3
 frozendict==2.4.0
 html5lib==1.1
 idna==3.6
@@ -13,6 +14,7 @@ multitasking==0.0.11
 numpy==1.26.4
 pandas==2.2.1
 peewee==3.17.1
+platformdirs==4.2.0
 python-dateutil==2.9.0.post0
 pytz==2024.1
 requests==2.31.0
@@ -22,5 +24,6 @@ sqlparse==0.4.4
 typing_extensions==4.10.0
 tzdata==2024.1
 urllib3==2.2.1
+virtualenv==20.25.1
 webencodings==0.5.1
 yfinance==0.2.37
