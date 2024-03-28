@@ -1,13 +1,11 @@
 {
-    "builds": [{
-        "src": "Stage_Analysis/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
-    }],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "Stage_Analysis/wsgi.py"
-        }
-    ]
+  "functions": {
+    "api": {
+      "runtime": "python3.9"
+    }
+  },
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "Stage_Analysis/wsgi.py" }
+  ]
 }
