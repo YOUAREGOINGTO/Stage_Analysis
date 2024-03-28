@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Chart</title>
+</head>
+<body>
+    <div id="tvchart"></div>
+    <form id="uploadForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" id="fileInput">
+        <select id="timeFrame" name="timeFrame">
+            <option value="1d">1 Day</option>
+            <option value="1wk">1 Week</option>
+            <!-- Add more options for different time frames if needed -->
+        </select>
+        <button type="button" onclick="displayChart()">Display Chart</button>
+    </form>
+
+    <!-- Include the Lightweight Charts library -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
+    <!-- Include your JavaScript file using the static template tag -->
+    <script src="{% static 'index.js' %}"></script>
+
+    <!-- Include CSRF token -->
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+    </script>
+</body>
+</html>
+
+
