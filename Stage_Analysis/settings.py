@@ -149,7 +149,7 @@ os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 # Add the media URL to the list of allowed hosts
 # Add '127.0.0.1' to the list of allowed hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','.vercel.app','stage-analysis-2.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','.vercel.app','stage-analysis.onrender.com']
 
 
 # Add the media URL to the list of s
