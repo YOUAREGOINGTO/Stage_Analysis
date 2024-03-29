@@ -16,4 +16,3 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Stage_Analysis.settings')
 
 application = get_wsgi_application()
 
-app = application
