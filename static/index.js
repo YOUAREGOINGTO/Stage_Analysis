@@ -57,6 +57,9 @@ async function displayChart() {
                 timeVisible: true,
                 secondsVisible: true,
             },
+            crosshair: {
+                mode: LightweightCharts.CrosshairMode.Normal,
+              },
         };
         clearChart();
         const domElement = document.getElementById('tvchart');
