@@ -101,7 +101,7 @@ def get_stock_data(file_path, start_date="2015-01-01", end=None, interval='1d', 
     stock_l = stock_list(file_path)
  
 
-    merged_df = weight_add(stock_l, start_date=start_date,base_price_close = 1000)
+    merged_df = weight_add(stock_l, start_date=start_date,interval= interval,base_price_close = 1000)
     merged_df.reset_index(drop=False, inplace=True)
     merged_df.rename(columns={'index': 'Date'}, inplace=True)
     merged_df = merged_df.round(2)
