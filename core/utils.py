@@ -1,6 +1,13 @@
 import pandas as pd
 import yfinance as yf
 from datetime import datetime,timedelta
+from concurrent.futures import ThreadPoolExecutor
+def fetch_stock_data(ticker, start_date, end, interval):
+    stock_data = yf.Ticker(ticker)
+    stock_data = stock_data.history(start=start_date, end=end, interval=interval)
+    stock_data["Volume"] = stock_data["Volume"] * ((stock_data["Close"] + stock_data['Open']) / 2)
+    return stock_data
+
 
 def active_stocks(merged_df, ticker_list, date):
     N = 0
@@ -12,11 +19,10 @@ def weight_add(ticker_list,start_date,base_price_close = 1000, end=None, interva
     
     ## create stock price dataset
     df_list = []
-    for ticker in ticker_list:
-        stock_data = yf.Ticker(ticker)
-        stock_data = stock_data.history(start = start_date, end=end, interval=interval)
-        stock_data["Volume"] = stock_data["Volume"]*((stock_data["Close"]+stock_data['Open'])/2)
-        df_list.append(stock_data)
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(fetch_stock_data, ticker, start_date, end, interval) for ticker in ticker_list]
+        for future in futures:
+            df_list.append(future.result())
     merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
 
     
