@@ -16,22 +16,21 @@ def active_stocks(merged_df, ticker_list, date):
             N+=1
     return N
 def weight_add(ticker_list,start_date,base_price_close = 1000, end=None, interval = '1d', MA=None):
-    
-    ## create stock price dataset
     df_list = []
-    with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(fetch_stock_data, ticker, start_date, end, interval) for ticker in ticker_list]
-        for future in futures:
-            df_list.append(future.result())
+    for ticker in ticker_list:
+        stock_data = yf.Ticker(ticker)
+        stock_data = stock_data.history(start = start_date, end=end, interval=interval)
+        stock_data["Volume"] = stock_data["Volume"]*((stock_data["Close"]+stock_data['Open'])/2)
+        df_list.append(stock_data)
+    
+
 
     merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
-    return merged_df
+    
 
-
-    merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
 
     
-    ## create stock price dataset
+    
 
     
     merged_df.index = merged_df.index.date
