@@ -1,6 +1,6 @@
 import pandas as pd
 import yfinance as yf
-from datetime import datetime,time
+from datetime import datetime,timedelta
 
 def active_stocks(merged_df, ticker_list, date):
     N = 0
@@ -8,7 +8,7 @@ def active_stocks(merged_df, ticker_list, date):
         if pd.isna(merged_df[ticker]['Close'][date]) is False:
             N+=1
     return N
-def weight_add(ticker_list, start_date,base_price_close, end=None, interval = '1d', MA=None):
+def weight_add(ticker_list,start_date,base_price_close = 1000, end=None, interval = '1d', MA=None):
     
     ## create stock price dataset
     df_list = []
@@ -18,14 +18,18 @@ def weight_add(ticker_list, start_date,base_price_close, end=None, interval = '1
         stock_data["Volume"] = stock_data["Volume"]*((stock_data["Close"]+stock_data['Open'])/2)
         df_list.append(stock_data)
     merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
+
+    
     merged_df.index = merged_df.index.date
+    st_date = merged_df.index[0]
     for ticker in ticker_list:
         if 'Weight' not in merged_df[ticker]:
             merged_df[ticker, 'Weight'] = None
 
     ## initial parameters
-    st_date = pd.to_datetime(start_date).date()
-    en_date = st_date + datetime.timedelta(days=180)
+    
+    print(st_date)
+    en_date = st_date + timedelta(days=180)
     total_val = base_price_close
     N = active_stocks(merged_df, ticker_list, st_date)
     dollar_amount = total_val/N
@@ -38,7 +42,7 @@ def weight_add(ticker_list, start_date,base_price_close, end=None, interval = '1
         # rebalencing    
         if date>en_date:
             st_date = date
-            en_date = st_date + datetime.timedelta(days=180)
+            en_date = st_date + timedelta(days=180)
             val = 0
             for ticker in ticker_list:
                 if pd.isna(merged_df[ticker, 'Weight'][date]) is False:
@@ -62,6 +66,7 @@ def weight_add(ticker_list, start_date,base_price_close, end=None, interval = '1
         k.fillna(0, inplace=True)
         df += k
     merged_df['Weighted', 'Volume'] = df
+   # print(merged_df["Weighted"])
     return merged_df["Weighted"]
 
 def get_stock_data(file_path, start_date="2015-01-01", end=None, interval='1d', MA=[30]):
@@ -94,8 +99,9 @@ def get_stock_data(file_path, start_date="2015-01-01", end=None, interval='1d', 
         return list(set(components))
 
     stock_l = stock_list(file_path)
+ 
 
-    merged_df = weight_add(stock_l,start_date, base_price_close = 1000)
+    merged_df = weight_add(stock_l, start_date=start_date,base_price_close = 1000)
     merged_df.reset_index(drop=False, inplace=True)
     merged_df.rename(columns={'index': 'Date'}, inplace=True)
     merged_df = merged_df.round(2)
