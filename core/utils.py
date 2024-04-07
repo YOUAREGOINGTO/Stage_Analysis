@@ -23,7 +23,15 @@ def weight_add(ticker_list,start_date,base_price_close = 1000, end=None, interva
         futures = [executor.submit(fetch_stock_data, ticker, start_date, end, interval) for ticker in ticker_list]
         for future in futures:
             df_list.append(future.result())
+
     merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
+    return merged_df
+
+
+    merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
+
+    
+    ## create stock price dataset
 
     
     merged_df.index = merged_df.index.date
