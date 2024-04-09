@@ -20,6 +20,9 @@ def weight_add(ticker_list,start_date,base_price_close = 1000, end=None, interva
     for ticker in ticker_list:
         stock_data = yf.Ticker(ticker)
         stock_data = stock_data.history(start = start_date, end=end, interval=interval)
+        if stock_data.empty:
+            ticker_list.remove(ticker)
+            pass
         stock_data["Volume"] = stock_data["Volume"]*((stock_data["Close"]+stock_data['Open'])/2)
         df_list.append(stock_data)
     
@@ -33,7 +36,7 @@ def weight_add(ticker_list,start_date,base_price_close = 1000, end=None, interva
     
 
     
-    merged_df.index = merged_df.index.date
+   # merged_df.index = merged_df.index.date
     st_date = merged_df.index[0]
     for ticker in ticker_list:
         if 'Weight' not in merged_df[ticker]:
@@ -125,8 +128,7 @@ def get_stock_data(file_path, start_date="2015-01-01", end=None, interval='1d', 
             merged_df['MA'+str(num)] = merged_df.Close.rolling(num).mean()
     
     merged_df.fillna(value=0, inplace=True)
+    merged_df.to_csv(r"C:\Users\yaswa\Downloads\ORB_Final.csv",index  = False)
     
     
     return merged_df
-
-
