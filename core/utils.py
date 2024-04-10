@@ -11,6 +11,7 @@ def get_stock_data(file_path, start_date = "2015-01-01", end=None, interval = '1
         stock_data = yf.Ticker(ticker)
         stock_data = stock_data.history(start = start_date, end=end, interval=interval)
         if stock_data.empty:
+            ticker_list.remove(ticker)
             pass
         stock_data["Volume"] = stock_data["Volume"]*((stock_data["Close"]+stock_data['Open'])/2)
         df_list.append(stock_data)
