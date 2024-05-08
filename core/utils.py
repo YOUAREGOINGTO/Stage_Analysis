@@ -18,7 +18,7 @@ def active_stocks(merged_df, ticker_list, date):
     return N
 
 
-def weight_add(ticker_list,start_date,base_price_close = 1000, end="2024-04-01", interval = '1d', MA=None):
+def weight_add(ticker_list,start_date,base_price_close = 1000, end= None, interval = '1d', MA=None):
     a= time.time()
     df_list = []
     print(ticker_list)
@@ -94,7 +94,7 @@ def weight_add(ticker_list,start_date,base_price_close = 1000, end="2024-04-01",
    # print(merged_df["Weighted"])
     return merged_df["Weighted"]
 
-def get_stock_data(file_path, start_date="2015-01-01", end= "2024-04-01", interval='1d', MA=[30]):
+def get_stock_data(file_path, start_date="2015-01-01", end= None, interval='1d', MA=[30]):
     def stock_list(file_path):
         components = []
         with open(file_path, 'r') as file:
@@ -143,7 +143,7 @@ def get_stock_data(file_path, start_date="2015-01-01", end= "2024-04-01", interv
     
     
     return merged_df
-def stock_selection(ticker_list,start_date,end ='2024-04-01'):
+def stock_selection(ticker_list,start_date,end = None):
     global f
     #By 3 month and 6 month gain.
     f= {}
