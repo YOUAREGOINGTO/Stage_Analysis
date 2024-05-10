@@ -141,7 +141,7 @@ def get_stock_data(file_path, start_date="2015-01-01", end= None, interval='1d',
     stock_l = stock_selection(ticker_list,start_date=start_date)
 
  
-    merged_df =avg_add(stocks_l, start_date=start_date, end=None, interval= interval )
+    merged_df =avg_add(ticker_list, start_date=start_date, end=None, interval= interval )
     #merged_df = weight_add(stock_l, start_date=start_date,interval= interval,base_price_close = 1000)
     merged_df.reset_index(drop=False, inplace=True)
     merged_df.rename(columns={'index': 'Date'}, inplace=True)
