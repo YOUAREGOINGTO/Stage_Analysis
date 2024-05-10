@@ -3,6 +3,10 @@ from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from .utils import get_stock_data,stock_selection,avg_add
 from django.conf import settings
+import os
+
+# Your code for the get_stock_data_view endpoint goes here
+
 
 
 def index(request):
