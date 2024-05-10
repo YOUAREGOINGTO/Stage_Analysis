@@ -17,7 +17,21 @@ def active_stocks(merged_df, ticker_list, date):
             N+=1
     return N
 
-
+def avg_add(ticker_list, start_date, end=None, interval = '1d', MA= None):
+    df_list = []
+    for ticker in ticker_list:
+        stock_data = yf.Ticker(ticker)
+        stock_data = stock_data.history(start = start_date, end=end, interval=interval)
+        stock_data["Volume"] = stock_data["Volume"]*((stock_data["Close"]+stock_data['Open'])/2)
+        df_list.append(stock_data)
+    merged_df = pd.concat(df_list, axis=1, keys=ticker_list)
+    for price_type in ['Open', 'High', 'Low', 'Close', 'Volume']:
+        merged_df['Average', price_type] = merged_df[[(key, price_type) for key in ticker_list]].mean(axis=1, skipna=True)
+    merged_df = merged_df['Average']
+    if MA is not None:
+        for num in MA:
+            merged_df[num] = merged_df.Close.rolling(num).mean()
+    return merged_df
 def weight_add(ticker_list,start_date,base_price_close = 1000, end= None, interval = '1d', MA=None):
     a= time.time()
     df_list = []
@@ -127,8 +141,8 @@ def get_stock_data(file_path, start_date="2015-01-01", end= None, interval='1d',
     stock_l = stock_selection(ticker_list,start_date=start_date)
 
  
-
-    merged_df = weight_add(stock_l, start_date=start_date,interval= interval,base_price_close = 1000)
+    merged_df =avg_add(stocks_l, start_date=start_date, end=None, interval= interval )
+    #merged_df = weight_add(stock_l, start_date=start_date,interval= interval,base_price_close = 1000)
     merged_df.reset_index(drop=False, inplace=True)
     merged_df.rename(columns={'index': 'Date'}, inplace=True)
     merged_df = merged_df.round(2)

@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
-from .utils import get_stock_data,stock_selection
-import os
+from .utils import get_stock_data,stock_selection,avg_add
 from django.conf import settings
 
 
