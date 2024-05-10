@@ -138,7 +138,7 @@ def get_stock_data(file_path, start_date="2015-01-01", end= None, interval='1d',
         return list(set(components))
 
     ticker_list = stock_list(file_path)
-    stock_l = stock_selection(ticker_list,start_date=start_date)
+    #stock_l = stock_selection(ticker_list,start_date=start_date)
 
  
     merged_df =avg_add(ticker_list, start_date=start_date, end=None, interval= interval )
